@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by ace on 2017/9/15.
  */
-@FeignClient(value = FeignApi.ACE_AUTH, configuration = {})
+@FeignClient(value = FeignApi.ACE_AUTH,fallback = DefaultFallback.class)
 public interface ServiceAuthFeign {
 
     @RequestMapping(value = "/client/myClient")
