@@ -10,14 +10,13 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * Created by Ace on 2017/6/2.
+ * @author tb
  */
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
 @MapperScan("com.github.wxiaoqi.security.auth.mapper")
 @RemoteApplicationEventScan(basePackages = "com.github.wxiaoqi.security.auth.common.event")
-@EnableAutoConfiguration
 public class AuthBootstrap {
     public static void main(String[] args) {
         SpringApplication.run(AuthBootstrap.class, args);
