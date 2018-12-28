@@ -21,8 +21,10 @@ import java.util.Map;
  */
 @Slf4j
 public class BaseController<Biz extends BaseBiz,Entity> {
+
     @Autowired
     protected HttpServletRequest request;
+
     @Autowired
     protected Biz baseBiz;
 

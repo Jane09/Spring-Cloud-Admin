@@ -1,41 +1,19 @@
 package com.github.wxiaoqi.security.common.msg;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * ${DESCRIPTION}
  *
  * @author wanghaobin
- * @create 2017-06-09 7:32
  */
+@Getter
+@Setter
 public class ListRestResponse<T> {
     String msg;
     T result;
     int count;
-
-
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getResult() {
-        return result;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public ListRestResponse count(int count) {
         this.setCount(count);

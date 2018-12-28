@@ -2,12 +2,13 @@ package com.github.wxiaoqi.security.common.service.impl;
 
 import com.github.wxiaoqi.security.common.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
+
+
     @Autowired
     protected M mapper;
 
@@ -22,11 +23,6 @@ public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
         return mapper.selectByPrimaryKey(id);
     }
 
-//    @Override
-//    public List<T> selectListByIds(List<Object> ids) {
-//        return mapper.selectByIds(ids);
-//    }
-
     @Override
     public List<T> selectList(T entity) {
         return mapper.select(entity);
@@ -37,14 +33,9 @@ public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
         return mapper.selectAll();
     }
 
-//    @Override
-//    public Long selectCountAll() {
-//        return mapper.selectCount();
-//    }
-
     @Override
     public Long selectCount(T entity) {
-        return Long.valueOf(mapper.selectCount(entity));
+        return (long) mapper.selectCount(entity);
     }
 
     @Override
@@ -77,13 +68,4 @@ public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
         mapper.updateByPrimaryKeySelective(entity);
     }
 
-//    @Override
-//    public void deleteBatchByIds(List<Object> ids) {
-//        mapper.batchDeleteByIds(ids);
-//    }
-//
-//    @Override
-//    public void updateBatch(List<T> entitys) {
-//        mapper.batchUpdate(entitys);
-//    }
 }

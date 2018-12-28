@@ -1,11 +1,16 @@
 package com.github.wxiaoqi.security.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -20,6 +25,10 @@ import java.util.Date;
  * @since 1.7
  */
 public class EntityUtils {
+
+	private static final String[] CREATE_FIELDS = {"crtName","crtUser","crtHost","crtTime"};
+	private static final String[] UPDATE_FIELDS = {"updName","updUser","updHost","updTime"};
+
 	/**
 	 * 快速将bean的crtUser、crtHost、crtTime、updUser、updHost、updTime附上相关值
 	 * 
@@ -27,37 +36,17 @@ public class EntityUtils {
 	 * @author 王浩彬
 	 */
 	public static <T> void setCreatAndUpdatInfo(T entity) {
-		setCreateInfo(entity);
 		setUpdatedInfo(entity);
 	}
 	
-	/**
-	 * 快速将bean的crtUser、crtHost、crtTime附上相关值
-	 * 
-	 * @param entity 实体bean
-	 * @author 王浩彬
-	 */
-	public static <T> void setCreateInfo(T entity){
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		String hostIp = "";
-		String name = "";
-		String id = "";
-		if(request!=null) {
-			hostIp = String.valueOf(request.getHeader("userHost"));
-			name = String.valueOf(request.getHeader("userName"));
-			name = URLDecoder.decode(name);
-			id = String.valueOf(request.getHeader("userId"));
+
+
+	private static HttpServletRequest getRequest() {
+		RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+		if(attributes instanceof ServletRequestAttributes) {
+			return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		}
-		// 默认属性
-		String[] fields = {"crtName","crtUser","crtHost","crtTime"};
-		Field field = ReflectionUtils.getAccessibleField(entity, "crtTime");
-		// 默认值
-		Object [] value = null;
-		if(field!=null&&field.getType().equals(Date.class)){
-			value = new Object []{name,id,hostIp,new Date()};
-		}
-		// 填充默认属性值
-		setDefaultValues(entity, fields, value);
+		return null;
 	}
 
 	/**
@@ -67,26 +56,44 @@ public class EntityUtils {
 	 * @author 王浩彬
 	 */
 	public static <T> void setUpdatedInfo(T entity){
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpServletRequest request = getRequest();
 		String hostIp = "";
 		String name = "";
 		String id = "";
 		if(request!=null) {
-			hostIp = String.valueOf(request.getHeader("userHost"));
-			name = String.valueOf(request.getHeader("userName"));
-			name = URLDecoder.decode(name);
-			id = String.valueOf(request.getHeader("userId"));
+			hostIp = request.getHeader("userHost");
+			name = request.getHeader("userName");
+			if(StringUtils.isNotBlank(name)) {
+				try {
+					name = URLDecoder.decode(name,StandardCharsets.UTF_8.displayName());
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+			id = request.getHeader("userId");
 		}
+
 		// 默认属性
-		String[] fields = {"updName","updUser","updHost","updTime"};
-		Field field = ReflectionUtils.getAccessibleField(entity, "updTime");
+		Field field = ReflectionUtils.getAccessibleField(entity, "crtTime");
+		Class dateClass = Date.class;
+		// 默认值
 		Object [] value = null;
-		if(field!=null&&field.getType().equals(Date.class)){
-			value = new Object []{name,id,hostIp,new Date()};
+		if(field!=null && field.getType().equals(dateClass)){
+			value = new Object []{name,id,hostIp, LocalDateTime.now()};
 		}
 		// 填充默认属性值
-		setDefaultValues(entity, fields, value);
+		setDefaultValues(entity, CREATE_FIELDS, value);
+
+		// 默认属性
+		field = ReflectionUtils.getAccessibleField(entity, "updTime");
+		value = null;
+		if(field!=null && field.getType().equals(dateClass)){
+			value = new Object []{ name,id,hostIp,LocalDateTime.now()};
+		}
+		// 填充默认属性值
+		setDefaultValues(entity, UPDATE_FIELDS, value);
 	}
+
 	/**
 	 * 依据对象的属性数组和值数组对对象的属性进行赋值
 	 * 
