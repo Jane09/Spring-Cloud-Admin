@@ -5,6 +5,6 @@ package com.github.wxiaoqi.security.auth.common.util;
  */
 public class StringHelper {
     public static String getObjectValue(Object obj){
-        return obj==null?"":obj.toString();
+        return obj==null?"":String.valueOf(obj);
     }
 }
