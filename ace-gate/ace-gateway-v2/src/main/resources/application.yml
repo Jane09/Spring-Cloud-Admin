@@ -28,6 +28,8 @@ feign:
       min-request-size: 2048
     response:
       enabled: true
+  hystrix:
+    enabled: true
 
 spring:
   application:
