@@ -20,6 +20,7 @@ import java.util.Map;
  * Version 1.0.0
  */
 public abstract class BaseBiz<M extends Mapper<T>, T> {
+
     @Autowired
     protected M mapper;
 
@@ -48,7 +49,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
 
 
     public Long selectCount(T entity) {
-        return new Long(mapper.selectCount(entity));
+        return (long) mapper.selectCount(entity);
     }
 
 
@@ -94,6 +95,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return mapper.selectCountByExample(example);
     }
 
+    @SuppressWarnings("unchecked")
     public TableResultResponse<T> selectByQuery(Query query) {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         Example example = new Example(clazz);
