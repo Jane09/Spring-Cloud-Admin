@@ -27,6 +27,7 @@ public class ReflectionUtils {
 	private static final String GETTER_PREFIX = "get";
 
 	private static final String CGLIB_CLASS_SEPARATOR = "$$";
+	private static final String DOT = ".";
 	
 	private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
@@ -36,7 +37,7 @@ public class ReflectionUtils {
 	 */
 	public static Object invokeGetter(Object obj, String propertyName) {
 		Object object = obj;
-		for (String name : StringUtils.split(propertyName, ".")){
+		for (String name : StringUtils.split(propertyName, DOT)){
 			String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(name);
 			object = invokeMethod(object, getterMethodName, new Class[] {}, new Object[] {});
 		}
@@ -47,9 +48,9 @@ public class ReflectionUtils {
 	 * 调用Setter方法, 仅匹配方法名。
 	 * 支持多级，如：对象名.对象名.方法
 	 */
-	public static void invokeSetter(Object obj, String propertyName, Object value) {
+	static void invokeSetter(Object obj, String propertyName, Object value) {
 		Object object = obj;
-		String[] names = StringUtils.split(propertyName, ".");
+		String[] names = StringUtils.split(propertyName, DOT);
 		for (int i=0; i<names.length; i++){
 			if(i<names.length-1){
 				String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(names[i]);
@@ -64,7 +65,7 @@ public class ReflectionUtils {
 	/**
 	 * 直接读取对象属性值, 无视private/protected修饰符, 不经过getter函数.
 	 */
-	public static Object getFieldValue(final Object obj, final String fieldName) {
+	static Object getFieldValue(final Object obj, final String fieldName) {
 		Field field = getAccessibleField(obj, fieldName);
 
 		if (field == null) {
@@ -98,7 +99,7 @@ public class ReflectionUtils {
 		}
 	}
 	
-	public static Object convert(Object object, Class<?> type) {
+	private static Object convert(Object object, Class<?> type) {
 	    if (object instanceof Number) {
 	        Number number = (Number) object;
 	        if (type.equals(byte.class) || type.equals(Byte.class)) {
@@ -131,8 +132,8 @@ public class ReflectionUtils {
 	 * 用于一次性调用的情况，否则应使用getAccessibleMethod()函数获得Method后反复调用.
 	 * 同时匹配方法名+参数类型，
 	 */
-	public static Object invokeMethod(final Object obj, final String methodName, final Class<?>[] parameterTypes,
-			final Object[] args) {
+	private static Object invokeMethod(final Object obj, final String methodName, final Class<?>[] parameterTypes,
+									   final Object[] args) {
 		Method method = getAccessibleMethod(obj, methodName, parameterTypes);
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + obj + "]");
@@ -150,7 +151,7 @@ public class ReflectionUtils {
 	 * 用于一次性调用的情况，否则应使用getAccessibleMethodByName()函数获得Method后反复调用.
 	 * 只匹配函数名，如果有多个同名函数调用第一个。
 	 */
-	public static Object invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
+	private static Object invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
 		Method method = getAccessibleMethodByName(obj, methodName);
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + obj + "]");
@@ -168,7 +169,7 @@ public class ReflectionUtils {
 	 * 
 	 * 如向上转型到Object仍无法找到, 返回null.
 	 */
-	public static Field getAccessibleField(final Object obj, final String fieldName) {
+	static Field getAccessibleField(final Object obj, final String fieldName) {
 		Validate.notNull(obj, "object can't be null");
 		Validate.notBlank(fieldName, "fieldName can't be blank");
 		for (Class<?> superClass = obj.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
@@ -191,8 +192,8 @@ public class ReflectionUtils {
 	 * 
 	 * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object... args)
 	 */
-	public static Method getAccessibleMethod(final Object obj, final String methodName,
-			final Class<?>... parameterTypes) {
+	private static Method getAccessibleMethod(final Object obj, final String methodName,
+											  final Class<?>... parameterTypes) {
 		Validate.notNull(obj, "object can't be null");
 		Validate.notBlank(methodName, "methodName can't be blank");
 
@@ -216,7 +217,7 @@ public class ReflectionUtils {
 	 * 
 	 * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object... args)
 	 */
-	public static Method getAccessibleMethodByName(final Object obj, final String methodName) {
+	private static Method getAccessibleMethodByName(final Object obj, final String methodName) {
 		Validate.notNull(obj, "object can't be null");
 		Validate.notBlank(methodName, "methodName can't be blank");
 
@@ -235,7 +236,7 @@ public class ReflectionUtils {
 	/**
 	 * 改变private/protected的方法为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
 	 */
-	public static void makeAccessible(Method method) {
+	private static void makeAccessible(Method method) {
 		if ((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers()))
 				&& !method.isAccessible()) {
 			method.setAccessible(true);
@@ -245,7 +246,7 @@ public class ReflectionUtils {
 	/**
 	 * 改变private/protected的成员变量为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
 	 */
-	public static void makeAccessible(Field field) {
+	private static void makeAccessible(Field field) {
 		if ((!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers()) || Modifier
 				.isFinal(field.getModifiers())) && !field.isAccessible()) {
 			field.setAccessible(true);
@@ -276,7 +277,7 @@ public class ReflectionUtils {
 	 * @param index the Index of the generic ddeclaration,start from 0.
 	 * @return the index generic declaration, or Object.class if cannot be determined
 	 */
-	public static Class getClassGenricType(final Class clazz, final int index) {
+	private static Class getClassGenricType(final Class clazz, final int index) {
 
 		Type genType = clazz.getGenericSuperclass();
 
@@ -316,7 +317,7 @@ public class ReflectionUtils {
 	/**
 	 * 将反射时的checked exception转换为unchecked exception.
 	 */
-	public static RuntimeException convertReflectionExceptionToUnchecked(Exception e) {
+	private static RuntimeException convertReflectionExceptionToUnchecked(Exception e) {
 		if (e instanceof IllegalAccessException || e instanceof IllegalArgumentException
 				|| e instanceof NoSuchMethodException) {
 			return new IllegalArgumentException(e);
@@ -335,7 +336,7 @@ public class ReflectionUtils {
 	 * @return 有属性返回true
 	 * 		        无属性返回false
 	 */
-	public static boolean hasField(final Object obj, final String fieldName){
+	static boolean hasField(final Object obj, final String fieldName){
 		Field field = getAccessibleField(obj, fieldName);
 		if (field == null) {
 			return false;

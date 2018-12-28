@@ -6,6 +6,11 @@ import java.util.UUID;
  * Created by ace on 2017/9/27.
  */
 public class UUIDUtils {
+
+    public static void main(String[] args) {
+        System.out.println(generateShortUuid());
+    }
+
     public static String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
             "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
             "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
@@ -15,7 +20,7 @@ public class UUIDUtils {
 
 
     public static String generateShortUuid() {
-        StringBuffer shortBuffer = new StringBuffer();
+        StringBuilder shortBuffer = new StringBuilder();
         String uuid = UUID.randomUUID().toString().replace("-", "");
         for (int i = 0; i < 8; i++) {
             String str = uuid.substring(i * 4, i * 4 + 4);
