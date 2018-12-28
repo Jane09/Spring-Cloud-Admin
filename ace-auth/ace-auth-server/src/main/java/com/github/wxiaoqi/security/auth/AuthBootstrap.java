@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @MapperScan("com.github.wxiaoqi.security.auth.mapper")
 @RemoteApplicationEventScan(basePackages = "com.github.wxiaoqi.security.auth.common.event")
+//@EnableHystrix
 public class AuthBootstrap {
     public static void main(String[] args) {
         SpringApplication.run(AuthBootstrap.class, args);

@@ -17,10 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping("client")
 public class ClientController{
+    private final AuthClientService authClientService;
+    private final KeyConfiguration keyConfiguration;
+
     @Autowired
-    private AuthClientService authClientService;
-    @Autowired
-    private KeyConfiguration keyConfiguration;
+    public ClientController(AuthClientService authClientService, KeyConfiguration keyConfiguration) {
+        this.authClientService = authClientService;
+        this.keyConfiguration = keyConfiguration;
+    }
 
     @RequestMapping(value = "/token", method = RequestMethod.POST)
     public ObjectRestResponse getAccessToken(String clientId, String secret) throws Exception {

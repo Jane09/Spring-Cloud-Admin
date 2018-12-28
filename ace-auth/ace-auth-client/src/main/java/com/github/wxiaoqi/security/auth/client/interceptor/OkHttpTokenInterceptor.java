@@ -23,15 +23,17 @@ import java.io.IOException;
 @Component
 @Log
 public class OkHttpTokenInterceptor implements Interceptor {
+
+    private final ServiceAuthUtil serviceAuthUtil;
+    private final ServiceAuthConfig serviceAuthConfig;
+    private final UserAuthConfig userAuthConfig;
+
     @Autowired
-    @Lazy
-    private ServiceAuthUtil serviceAuthUtil;
-    @Autowired
-    @Lazy
-    private ServiceAuthConfig serviceAuthConfig;
-    @Autowired
-    @Lazy
-    private UserAuthConfig userAuthConfig;
+    public OkHttpTokenInterceptor(ServiceAuthUtil serviceAuthUtil, ServiceAuthConfig serviceAuthConfig, UserAuthConfig userAuthConfig) {
+        this.serviceAuthUtil = serviceAuthUtil;
+        this.serviceAuthConfig = serviceAuthConfig;
+        this.userAuthConfig = userAuthConfig;
+    }
 
 
     @Override

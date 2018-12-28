@@ -22,12 +22,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class AuthClientRunner implements CommandLineRunner {
 
+    private final ServiceAuthConfig serviceAuthConfig;
+    private final UserAuthConfig userAuthConfig;
+    private final ServiceAuthFeign serviceAuthFeign;
+
     @Autowired
-    private ServiceAuthConfig serviceAuthConfig;
-    @Autowired
-    private UserAuthConfig userAuthConfig;
-    @Autowired
-    private ServiceAuthFeign serviceAuthFeign;
+    public AuthClientRunner(ServiceAuthConfig serviceAuthConfig, UserAuthConfig userAuthConfig, ServiceAuthFeign serviceAuthFeign) {
+        this.serviceAuthConfig = serviceAuthConfig;
+        this.userAuthConfig = userAuthConfig;
+        this.serviceAuthFeign = serviceAuthFeign;
+    }
 
     @Override
     public void run(String... args) throws Exception {

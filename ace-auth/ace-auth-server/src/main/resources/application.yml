@@ -52,22 +52,22 @@ mybatis:
 
 server:
   port: 9777 #启动端口
-
+#feign
 feign:
   httpclient:
     enabled: false
   okhttp:
     enabled: true
-
+  hystrix:
+    enabled: true
+#ribbon
 ribbon:
   eureka:
+    enabled: false
+  okhttp:
     enabled: true
-  ReadTimeout: 60000
-  ConnectTimeout: 60000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
-
+  restclient:
+    enabled: false
 hystrix:
   threadpool:
     default:

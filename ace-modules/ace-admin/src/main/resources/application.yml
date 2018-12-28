@@ -45,15 +45,11 @@ sample:
   zipkin:
     # When enabled=false, traces log to the console. Comment to send to zipkin
     enabled: false
-
 mybatis:
   mapper-locations: "classpath*:mapper/*.xml"
   base-packages: com.github.wxiaoqi.security.admin.mapper
-
 server:
   port: 8762
-
-
 eureka:
   instance:
     statusPageUrlPath: /actuator/info
@@ -102,7 +98,7 @@ hystrix:
 swagger:
   enabled: true
   base-package: com.github.wxiaoqi.security.admin
-  title: ace-admin
+  title: ACE-ADMIN
   version: 1.0.0.SNAPSHOT
   description: 管理后端服务
   contact:
@@ -113,7 +109,7 @@ auth:
   user:
     token-header: Authorization
   client:
-    id: ace-admin
+    id: ACE-ADMIN
     secret: 123456
     token-header: x-client-token
 
@@ -128,6 +124,6 @@ redis:
   password:
   timeout: 2000
   # 服务或应用名
-  sysName: ace-admin
+  sysName: ACE-ADMIN
   enable: true
   database: 0

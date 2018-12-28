@@ -1,12 +1,14 @@
 package com.github.wxiaoqi.security.auth.client.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by ace on 2017/9/15.
  */
+@Component
 public class UserAuthConfig {
 
     @Value("${auth.user.token-header}")
