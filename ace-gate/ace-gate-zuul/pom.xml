@@ -13,6 +13,23 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.wxiaoqi</groupId>
+            <artifactId>ace-interface</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wxiaoqi</groupId>
+            <artifactId>ace-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wxiaoqi</groupId>
+            <artifactId>ace-auth-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wxiaoqi</groupId>
+            <artifactId>ace-gate-ratelimit</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
@@ -27,16 +44,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.wxiaoqi</groupId>
-            <artifactId>ace-interface</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.wxiaoqi</groupId>
-            <artifactId>ace-common</artifactId>
-            <version>2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -55,26 +62,13 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.33</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.wxiaoqi</groupId>
-            <artifactId>ace-auth-client</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.wxiaoqi</groupId>
-            <artifactId>ace-gate-ratelimit</artifactId>
-            <version>2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jackson</artifactId>
-            <version>8.18.0</version>
         </dependency>
     </dependencies>
     <build>

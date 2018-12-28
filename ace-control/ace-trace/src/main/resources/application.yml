@@ -11,8 +11,6 @@ spring:
    #表示当前程序不使用sleuth
   sleuth:
     enabled: false
-   #表示zipkin数据存储方式是mysql
-
 zipkin:
   storage:
     type: mysql
@@ -25,7 +23,6 @@ zipkin:
       queue: zipkin
 server:
   port: 9411
-
 eureka:
     instance:
         statusPageUrlPath: /info

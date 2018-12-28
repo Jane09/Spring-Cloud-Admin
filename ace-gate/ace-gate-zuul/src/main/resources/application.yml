@@ -89,7 +89,7 @@ gate:
 
 
 auth:
-  serviceId: ace-auth
+  serviceId: ACE-AUTH
   user:
     token-header: Authorization
   client:
